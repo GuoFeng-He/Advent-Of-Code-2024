@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+// 743, 444, 442
 
 public class Day2 {
     public static void main(String[] args) {
@@ -23,20 +24,28 @@ public class Day2 {
         int count = 0;
         for (int[] intList: list){
             int lastDifference = 0;
+            int[] original = intList;
             boolean strike = false;
+            boolean strikeTwo = false;
 
             for (int i = 0; i < intList.length - 1; i++){
                 int difference = intList[i + 1] - intList[i];
 
                 if (difference * lastDifference >= 0 && Math.abs(difference) >= 1 && Math.abs(difference) <= 3){
-                    lastDifference = difference;
+                    lastDifference = difference; // between the current idx and the next idx
                 } else {
                     if (!strike){
-                        intList = removeElement(i + 1, intList);
+                        intList = removeElement(i, intList);
                         strike = true;
-                    }
-                    else{
-                        break;
+                        i--;
+                    } else {
+                        if (!strikeTwo){
+                            intList = removeFirstElement(original);
+                            strikeTwo = true;
+                            i = 0;
+                        } else {
+                            break;
+                        }
                     }
                 }
 
@@ -78,5 +87,17 @@ public class Day2 {
         }
         return newList;
     }
+    public static int[] removeFirstElement(int[] list){
+        int[] newList = new int[list.length - 1];
+        int increment = 0;
 
+        for (int i = 0; i < list.length; i++){
+            if (i != 0){
+                newList[i - increment] = list[i];
+            } else{
+                increment = 1;
+            }
+        }
+        return newList;
+    }
 }
