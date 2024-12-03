@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -9,17 +10,29 @@ public class Day1 {
     public static void main(String[] args) {
 
         ArrayList<String> fileData = getFileData("src/Day1Input.txt");
-        ArrayList<Integer> listOne = new ArrayList<>();
-        ArrayList<Integer> listTwo = new ArrayList<>();
+        int size = fileData.size();
+        int[] listOne = new int[size];
+        int[] listTwo = new int[size];
 
-        for (String str: fileData){
-            String[] split = str.split("   ");
-            listOne.add(Integer.parseInt(split[0]));
-            listTwo.add(Integer.parseInt(split[1]));
+        for (int i = 0; i < size; i++){
+            listOne[i] = Integer.parseInt(fileData.get(i).split("   ")[0]);
+            listTwo[i] = Integer.parseInt(fileData.get(i).split("   ")[1]);
         }
-        System.out.println(listOne);
-        System.out.println("////");
-        System.out.println(listTwo);
+
+        int sum = 0;
+        // part 1
+//        Arrays.sort(listOne);
+//        Arrays.sort(listTwo);
+//
+//        for (int i = 0; i < size; i++){
+//            sum += Math.abs(listOne[i] - listTwo[i]);
+//        }
+
+        // part 2
+        for (int i: listOne){
+            sum += i * countNum(listTwo, i);
+        }
+        System.out.println(sum);
 
     }
 
@@ -40,14 +53,31 @@ public class Day1 {
         }
     }
 
-    public static ArrayList<Integer> sortChronological(ArrayList<Integer> array){
-        for (int i = 0; i < array.size(); i++){
-            int val = array.get(i);
-            int nextVal = array.get(i + 1)
-            if (val > nextVal){
-                int temp = array.get(i);
+    public static void printList(int[] list){
+        for (int i: list){
+            System.out.println(i);
+        }
+        System.out.println("///////////////////");
+    }
 
+    public static int countNum(int[] list, int num){
+        int count = 0;
+        for (int i: list){
+            if (i == num){
+                count++;
             }
         }
+        return count;
     }
+
+//    public static ArrayList<Integer> sortChronological(ArrayList<Integer> array){
+//        for (int i = 0; i < array.size(); i++){
+//            int val = array.get(i);
+//            int nextVal = array.get(i + 1)
+//            if (val > nextVal){
+//                int temp = array.get(i);
+//
+//            }
+//        }
+//    }
 }
