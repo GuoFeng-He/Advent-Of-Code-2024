@@ -10,7 +10,7 @@ public class Day4 {
     static String[][] wordSearch;
 
     public static void main(String[] args){
-        ArrayList<String> fileData = getFileData("src/Day4Input");
+        ArrayList<String> fileData = getFileData("src/Day4Test");
         wordSearch = new String[fileData.size()][fileData.get(0).length()];
 
         for (int r = 0; r < wordSearch.length; r++){
@@ -20,6 +20,7 @@ public class Day4 {
         }
 
         System.out.println(partOne());
+        System.out.println(partTwo());
     }
 
     public static ArrayList<String> getFileData(String fileName) {
@@ -75,12 +76,21 @@ public class Day4 {
     }
 
     public static int partTwo(){
-
+        int count = 0;
+            for (int r = 1; r < wordSearch.length - 1; r++){
+                for (int c = 1; c < wordSearch[0].length - 1; c++){
+                    if(wordSearch[r][c].equals("A") && mas(r ,c)){
+                        count++;
+                        System.out.println("COORDINATES: " + r + "," + c);
+                    }
+                }
+            }
+        return count;
     }
 
     // top
     public static boolean checkTopLeft(int x, int y){
-        if (x < 3 || y < 3){
+        if (x < 3  || y < 3){
             return false;
         }
         String str = "";
@@ -132,6 +142,8 @@ public class Day4 {
         return str.equals("XMAS");
     }
 
+
+
     // bottom
     public static boolean checkBottomLeft(int x, int y){
         if (x < 3 || y > wordSearch.length - 4){
@@ -162,5 +174,23 @@ public class Day4 {
             str += wordSearch[x + i][y + i];
         }
         return str.equals("XMAS");
+    }
+
+
+    // x-mas
+    public static boolean mas(int x, int y){
+        int count = 0;
+        if (wordSearch[x - 1][y - 1].equals("M") && wordSearch[x + 1][y + 1].equals("S")){
+            count++;
+        }
+        if (wordSearch[x + 1][y + 1].equals("M") && wordSearch[x - 1][y - 1].equals("S")){
+            count++;
+        }
+
+        if (wordSearch[x + 1][y - 1].equals("M") && wordSearch[x - 1][y + 1].equals("S")){
+            count++;
+        }
+
+        return count == 2;
     }
 }
