@@ -77,14 +77,14 @@ public class Day4 {
 
     public static int partTwo(){
         int count = 0;
-            for (int r = 1; r < wordSearch.length - 1; r++){
-                for (int c = 1; c < wordSearch[0].length - 1; c++){
-                    if(wordSearch[r][c].equals("A") && mas(r ,c)){
-                        count++;
-                        System.out.println("COORDINATES: " + r + "," + c);
-                    }
+        for (int r = 1; r < wordSearch.length - 1; r++){
+            for (int c = 1; c < wordSearch[0].length - 1; c++){
+                if(wordSearch[r][c].equals("A") && mas(r ,c)){
+                    count++;
+                    System.out.println("COORDINATES: " + r + "," + c);
                 }
             }
+        }
         return count;
     }
 
@@ -188,6 +188,9 @@ public class Day4 {
         }
 
         if (wordSearch[x + 1][y - 1].equals("M") && wordSearch[x - 1][y + 1].equals("S")){
+            count++;
+        }
+        if (wordSearch[x - 1][y + 1].equals("M") && wordSearch[x + 1][y - 1].equals("S")){
             count++;
         }
 
