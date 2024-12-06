@@ -14,28 +14,33 @@ public class Day3 {
     public static void main(String[] args) {
 
         ArrayList<String> fileData = getFileData("src/Day3Input");
-        StringBuilder fileDataString = new StringBuilder();
-        String testString = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
+        String fileDataString = "";
 
         for (String a: fileData){
-            fileDataString.append(a);
+            fileDataString += a;
         }
 
-        System.out.println(fileDataString);
-        System.out.println(fileData);
 
-        ArrayList<String> allMatches = new ArrayList<String>();
-        String regex = "mul\\([1-9][0-9]{0,2},[1-9][0,9]{0,2}\\)";
+        ArrayList<String> allMatchesOne = new ArrayList<>();
+        String regex = "mul\\([1-9][0-9]{0,2},[1-9][0-9]{0,2}\\)";
+        ArrayList<String> allMatchesTwo = new ArrayList<>();
+        String regexTwo  = "mul\\([1-9][0-9]{0,2},[1-9][0-9]{0,2}\\)|do\\(\\)|don't\\(\\)";
 
         Matcher m = Pattern.compile(regex).matcher(fileDataString);
+        Matcher mTwo = Pattern.compile(regexTwo).matcher(fileDataString);
 
         while (m.find()) {
-            allMatches.add(m.group());
+            allMatchesOne.add(m.group());
         }
+//
+        while(mTwo.find()){
+            allMatchesTwo.add(mTwo.group());
+        }
+        System.out.println(allMatchesOne);
 
-        System.out.println(allMatches);
 
-        System.out.println(partOne(allMatches));
+        System.out.println(partOne(allMatchesOne));
+        System.out.println(partTwo(allMatchesTwo));
 
 
 
@@ -63,13 +68,30 @@ public class Day3 {
         int sum = 0;
 
         for (String str: matches){
-            int firstInt = Integer.parseInt(str.substring(4, str.indexOf(",")));
-            int secondInt = Integer.parseInt(str.substring(str.indexOf(",") + 1, str.length() - 1));
-
-            sum += firstInt * secondInt;
-            System.out.print(firstInt+",");
-            System.out.print(secondInt + "||||");
+            sum += multiply(str);
         }
         return sum;
+    }
+
+    public static int partTwo(ArrayList<String> matches){
+        int sum = 0;
+        boolean count = true;
+
+        for (String str: matches){
+            if (str.equals("don't()")){
+                count = false;
+            } else if (str.equals("do()")){
+                count = true;
+            } else if (count){
+                sum += multiply(str);
+            }
+        }
+        return sum;
+    }
+
+    public static int multiply(String str){
+        int firstInt = Integer.parseInt(str.substring(4, str.indexOf(",")));
+        int secondInt = Integer.parseInt(str.substring(str.indexOf(",") + 1, str.length() - 1));
+        return firstInt * secondInt;
     }
 }
