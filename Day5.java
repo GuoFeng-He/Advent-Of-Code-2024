@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+// 4140 (too low)
+
 public class Day5 {
     static ArrayList<String> parameters;
     public static void main (String[] args){
@@ -11,6 +13,7 @@ public class Day5 {
         parameters = fileData.get(0);
         ArrayList<String> orders = fileData.get(1);
 
+        System.out.println(partOne(orders));
     }
 
     public static ArrayList<ArrayList<String>> getFileData(String fileName) {
@@ -37,23 +40,48 @@ public class Day5 {
     }
 
     public static int partOne(ArrayList<String> orders){
-        ArrayList<Integer> middles = new ArrayList<>();
+        int sum = 0;
         for (String order: orders){
-            int[] split = convertInt(order.split(","));
+            ArrayList<Integer> split = convertInt(order.split(","));
+            if (!isIncorrect(order, split)){
+                sum += split.get((split.size() / 2));
+            }
+        }
+        return sum;
+    }
 
-            for (int i = 0; i < split.length; i++){
-                ArrayList<Integer> lessThan = getLessThan(split[i]);
-                for (int j = i + 1; j < split.length; j++){
-                    if (lessThan.contains(split[j]))
+    public static int partTwo(ArrayList<String> orders){
+        ArrayList<ArrayList<Integer>> incorrectOrders = new ArrayList<>();
+
+        for (String order: orders){
+            ArrayList<Integer> split = convertInt(order.split(","));
+            if (isIncorrect(order, split)){
+                incorrectOrders.add(split);
+            }
+        }
+
+        for (ArrayList<Integer> a: incorrectOrders){
+            for (int i = 0; )
+        }
+        return 0;
+    }
+
+    public static boolean isIncorrect(String order, ArrayList<Integer> split){
+        for (int i = 0; i < split.size(); i++){
+            ArrayList<Integer> lessThan = getLessThan(split.get(i));
+            for (int j = 0; j < lessThan.size(); j++){
+                if (split.contains(lessThan.get(j)) && split.indexOf(lessThan.get(j)) < i ){
+                    return true;
                 }
             }
         }
+        return false;
     }
 
-    public static int[] convertInt(String[] split){
-        int[] newList = new int[split.length];
+    public static ArrayList<Integer> convertInt(String[] split){
+        ArrayList<Integer> newList = new ArrayList<>();
         for (int i = 0; i < split.length; i++){
-            newList[i] = Integer.parseInt(split[i]);
+            newList.add(Integer.parseInt(split[i]));
         }
         return newList;
     }
