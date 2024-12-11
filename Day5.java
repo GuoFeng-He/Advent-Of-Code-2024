@@ -2,18 +2,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 // 4140 (too low)
 
+// 6047 too low
+
 public class Day5 {
     static ArrayList<String> parameters;
     public static void main (String[] args){
-        ArrayList<ArrayList<String>> fileData = getFileData("src/Day5Input");
+        ArrayList<ArrayList<String>> fileData = getFileData("src/Day5Test");
         parameters = fileData.get(0);
         ArrayList<String> orders = fileData.get(1);
 
         System.out.println(partOne(orders));
+        System.out.println(partTwo(orders));
     }
 
     public static ArrayList<ArrayList<String>> getFileData(String fileName) {
@@ -43,7 +47,7 @@ public class Day5 {
         int sum = 0;
         for (String order: orders){
             ArrayList<Integer> split = convertInt(order.split(","));
-            if (!isIncorrect(order, split)){
+            if (!isIncorrect(split)){
                 sum += split.get((split.size() / 2));
             }
         }
@@ -52,21 +56,50 @@ public class Day5 {
 
     public static int partTwo(ArrayList<String> orders){
         ArrayList<ArrayList<Integer>> incorrectOrders = new ArrayList<>();
+        int sum = 0;
 
+        // get incorrect orders
         for (String order: orders){
             ArrayList<Integer> split = convertInt(order.split(","));
-            if (isIncorrect(order, split)){
+            if (isIncorrect(split)){
                 incorrectOrders.add(split);
             }
         }
 
+        // check for how many numbers are greater than num
         for (ArrayList<Integer> a: incorrectOrders){
-            for (int i = 0; )
+            ArrayList<Integer> params = new ArrayList<>();
+            for (int i = 0; i < a.size(); i++){
+                ArrayList<Integer> lessThan = getLessThan(a.get(i));
+                int count = 0;
+
+                for (int j: lessThan){
+                    if (a.contains(j)){
+                        count++;
+                    }
+                }
+
+                // counts how many number it's less than in the combination
+                params.add(a.get(i));
+                params.add(count);
+            }
+
+            int[] ordered = new int[params.size()];
+
+            int idx = 0;
+            for (int i = 1; i < params.size(); i += 2){
+                ordered[idx] = params.get(i);
+                idx++;
+            }
+
+            Arrays.sort(ordered, Collections.reverseOrder());
+            System.out.println(params.get(params.indexOf(ordered[ordered.length / 2]) - 1));
+            sum += params.get(params.indexOf(ordered[ordered.length / 2]) - 1);
         }
-        return 0;
+        return sum;
     }
 
-    public static boolean isIncorrect(String order, ArrayList<Integer> split){
+    public static boolean isIncorrect(ArrayList<Integer> split){
         for (int i = 0; i < split.size(); i++){
             ArrayList<Integer> lessThan = getLessThan(split.get(i));
             for (int j = 0; j < lessThan.size(); j++){
