@@ -2,14 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
-
-// 4140 (too low)
-
-// 6047 too low
-// 6203 too low
-// 6370
 
 public class Day5 {
     static ArrayList<String> parameters;
