@@ -8,6 +8,8 @@ import java.util.Scanner;
 // 4140 (too low)
 
 // 6047 too low
+// 6203 too low
+// 6370
 
 public class Day5 {
     static ArrayList<String> parameters;
@@ -16,8 +18,8 @@ public class Day5 {
         parameters = fileData.get(0);
         ArrayList<String> orders = fileData.get(1);
 
-        System.out.println(partOne(orders));
-        System.out.println(partTwo(orders));
+        System.out.println("Part One: " + partOne(orders));
+        System.out.println("Part Two: " + partTwo(orders));
     }
 
     public static ArrayList<ArrayList<String>> getFileData(String fileName) {
@@ -84,7 +86,7 @@ public class Day5 {
                 params.add(count);
             }
 
-            int[] ordered = new int[params.size()];
+            int[] ordered = new int[params.size() / 2];
 
             int idx = 0;
             for (int i = 1; i < params.size(); i += 2){
@@ -92,9 +94,14 @@ public class Day5 {
                 idx++;
             }
 
-            Arrays.sort(ordered, Collections.reverseOrder());
-            System.out.println(params.get(params.indexOf(ordered[ordered.length / 2]) - 1));
-            sum += params.get(params.indexOf(ordered[ordered.length / 2]) - 1);
+            Arrays.sort(ordered);
+
+            int middleNum = ordered[ordered.length / 2];
+            for (int i = 0; i < params.size(); i++){
+                if (params.get(i) == middleNum && a.contains(params.get(i - 1))){
+                    sum += params.get(i - 1);
+                }
+            }
         }
         return sum;
     }
