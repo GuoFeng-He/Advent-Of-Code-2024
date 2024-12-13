@@ -8,27 +8,43 @@ public class Day6 {
     public static void main(String[] args){
         ArrayList<ArrayList<String>> fileData = getFileData("src/Day6Input");
 
-        System.out.println(getCaratPosition(fileData));
+        System.out.println("Part One: " + partOne(fileData));
     }
+
 
     public static int partOne(ArrayList<ArrayList<String>> f){
-        HashSet<String> uniqueSpots = new HashSet<>();
-        int[] pos = getPosition(f);
+        HashSet<String> uniquePositions = new HashSet<>();
+        int[] pos = getPosition(f); // columns [0], rows[1]
 
-        while (pos[0] != 0 && pos[1] != 0){
+        while (pos[0] != 0 && pos[0] != f.getFirst().size() - 1 && pos[1] != 0 && pos[1] != f.size() - 1){
             String s = f.get(pos[1]).get(pos[0]);
-            if (s.equals("^")){
-
-                if (f.get(pos[1] - 1).get(pos[0]) != "#"){
-                        
+            if (s.equals("^") && !f.get(pos[1] - 1).get(pos[0]).equals("#")){
+                f.get(pos[1]).set(pos[0], "X");
+                f.get(pos[1] - 1).set(pos[0], "^");
+            } else if (s.equals(">") && !f.get(pos[1]).get(pos[0] + 1).equals("#")){
+                f.get(pos[1]).set(pos[0], "X");
+                f.get(pos[1]).set(pos[0] + 1, ">");
+            } else if (s.equals("V") && !f.get(pos[1] + 1).get(pos[0]).equals("#")){
+                f.get(pos[1]).set(pos[0], "X");
+                f.get(pos[1] + 1).set(pos[0], "V");
+            } else if (s.equals("<") && !f.get(pos[1]).get(pos[0] - 1).equals("#")){
+                f.get(pos[1]).set(pos[0], "X");
+                f.get(pos[1]).set(pos[0] - 1, "<");
+            } else {
+                switch (s) {
+                    case "^" -> f.get(pos[1]).set(pos[0], ">");
+                    case ">" -> f.get(pos[1]).set(pos[0], "V");
+                    case "V" -> f.get(pos[1]).set(pos[0], "<");
+                    default -> f.get(pos[1]).set(pos[0], "^");
                 }
             }
+            uniquePositions.add(pos[0] + "," + pos[1]);
+            pos = getPosition(f);
         }
-
-        return uniqueSpots.size();
+        return uniquePositions.size() + 1;
     }
 
-    // x, y
+    // x (columns), y (rows)
     public static int[] getPosition(ArrayList<ArrayList<String>> fileData){
         int[] pos = new int[2];
         for (int i = 0; i < fileData.size(); i++){
