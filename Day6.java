@@ -1,5 +1,7 @@
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -13,6 +15,42 @@ public class Day6 {
 
 
     public static int partOne(ArrayList<ArrayList<String>> f){
+        HashSet<String> uniquePositions = getAllPositions(f);
+        return uniquePositions.size() + 1;
+    }
+
+    public static int partTwo(ArrayList<ArrayList<String>> f){
+        HashSet<String> uniquePositions = getAllPositions(f);
+
+        for (String pos: uniquePositions){
+            String[] posSplit = pos.split(","); // columns [0], rows[1]
+            int x = Integer.parseInt(posSplit[0]);
+            int y = Integer.parseInt(posSplit[1]);
+
+            String s = f.get(y).get(x);
+            if (s.equals("^")){
+                f.get(y - 1).set(x, "#");
+            } else if (f.get())
+        }
+    }
+
+    // x (columns), y (rows)
+    public static int[] getPosition(ArrayList<ArrayList<String>> fileData){
+        int[] pos = new int[2];
+        for (int i = 0; i < fileData.size(); i++){
+            for (int j = 0; j < fileData.get(0).size(); j++){
+                String s = fileData.get(i).get(j);
+                if (s.equals("^") || s.equals(">") || s.equals("V") || s.equals("<")){
+                    pos[0] = j;
+                    pos[1] = i;
+                    return pos;
+                }
+            }
+        }
+        return pos;
+    }
+
+    public static HashSet<String> getAllPositions (ArrayList<ArrayList<String>> f){
         HashSet<String> uniquePositions = new HashSet<>();
         int[] pos = getPosition(f); // columns [0], rows[1]
 
@@ -41,23 +79,7 @@ public class Day6 {
             uniquePositions.add(pos[0] + "," + pos[1]);
             pos = getPosition(f);
         }
-        return uniquePositions.size() + 1;
-    }
-
-    // x (columns), y (rows)
-    public static int[] getPosition(ArrayList<ArrayList<String>> fileData){
-        int[] pos = new int[2];
-        for (int i = 0; i < fileData.size(); i++){
-            for (int j = 0; j < fileData.get(0).size(); j++){
-                String s = fileData.get(i).get(j);
-                if (s.equals("^") || s.equals(">") || s.equals("V") || s.equals("<")){
-                    pos[0] = j;
-                    pos[1] = i;
-                    return pos;
-                }
-            }
-        }
-        return pos;
+        return uniquePositions;
     }
 
     public static ArrayList<ArrayList<String>> getFileData(String fileName) {
