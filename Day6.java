@@ -10,7 +10,8 @@ public class Day6 {
     public static void main(String[] args){
         ArrayList<ArrayList<String>> fileData = getFileData("src/Day6Input");
 
-        System.out.println("Part One: " + partOne(fileData));
+//        System.out.println("Part One: " + partOne(fileData));
+        System.out.println("Part Two: " + partTwo(fileData));
     }
 
 
@@ -21,17 +22,36 @@ public class Day6 {
 
     public static int partTwo(ArrayList<ArrayList<String>> f){
         HashSet<String> uniquePositions = getAllPositions(f);
+        int count = 0;
 
         for (String pos: uniquePositions){
+            ArrayList<ArrayList<String>> b = getFileData("src/Day6Input");
+            for (int i = 0; i < b.size(); i++){
+                System.out.println(b.get(i));
+            }
+            System.out.println("------------------------------------");
             String[] posSplit = pos.split(","); // columns [0], rows[1]
             int x = Integer.parseInt(posSplit[0]);
             int y = Integer.parseInt(posSplit[1]);
+            String symbol = pos.substring(pos.length() - 1);
+            b.get(y).set(x, symbol);
 
-            String s = f.get(y).get(x);
-            if (s.equals("^")){
-                f.get(y - 1).set(x, "#");
-            } else if (f.get())
+
+            if (symbol.equals("^")){
+                b.get(y - 1).set(x, "#");
+            } else if (symbol.equals(">")){
+                b.get(y).set(x + 1, "#");
+            } else if (symbol.equals("V")){
+                b.get(y + 1).set(x, "#");
+            } else {
+                b.get(y).set(x - 1, "#");
+            }
+
+            if (getAllPositions(b).isEmpty()){
+                count++;
+            }
         }
+        return count;
     }
 
     // x (columns), y (rows)
@@ -52,7 +72,8 @@ public class Day6 {
 
     public static HashSet<String> getAllPositions (ArrayList<ArrayList<String>> f){
         HashSet<String> uniquePositions = new HashSet<>();
-        int[] pos = getPosition(f); // columns [0], rows[1]
+        ArrayList<String> sequence = new ArrayList<>();
+        int[] pos = getPosition(f); // columns [0] rows[1]
 
         while (pos[0] != 0 && pos[0] != f.getFirst().size() - 1 && pos[1] != 0 && pos[1] != f.size() - 1){
             String s = f.get(pos[1]).get(pos[0]);
@@ -76,8 +97,20 @@ public class Day6 {
                     default -> f.get(pos[1]).set(pos[0], "^");
                 }
             }
-            uniquePositions.add(pos[0] + "," + pos[1]);
+
+            String save = pos[0] + "," + pos[1] + "," + s;
+            if (!sequence.contains(save)) {
+                sequence.add(save);
+            } else {
+                return new HashSet<>();
+            }
+            uniquePositions.add(save);
             pos = getPosition(f);
+
+//            for (int i = 0; i < f.size(); i++){
+//                System.out.println(f.get(i));
+//            }
+//            System.out.println("/////////////");
         }
         return uniquePositions;
     }
