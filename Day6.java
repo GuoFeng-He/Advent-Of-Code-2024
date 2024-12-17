@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
+// 2207 (too high)
 public class Day6 {
     public static void main(String[] args){
         ArrayList<ArrayList<String>> fileData = getFileData("src/Day6Input");
 
-//        System.out.println("Part One: " + partOne(fileData));
+
+        System.out.println("Part One: " + partOne(fileData));
         System.out.println("Part Two: " + partTwo(fileData));
     }
 
@@ -26,10 +28,7 @@ public class Day6 {
 
         for (String pos: uniquePositions){
             ArrayList<ArrayList<String>> b = getFileData("src/Day6Input");
-            for (int i = 0; i < b.size(); i++){
-                System.out.println(b.get(i));
-            }
-            System.out.println("------------------------------------");
+            removeCarat(b);
             String[] posSplit = pos.split(","); // columns [0], rows[1]
             int x = Integer.parseInt(posSplit[0]);
             int y = Integer.parseInt(posSplit[1]);
@@ -49,6 +48,7 @@ public class Day6 {
 
             if (getAllPositions(b).isEmpty()){
                 count++;
+                System.out.println(count);
             }
         }
         return count;
@@ -107,12 +107,25 @@ public class Day6 {
             uniquePositions.add(save);
             pos = getPosition(f);
 
+
 //            for (int i = 0; i < f.size(); i++){
 //                System.out.println(f.get(i));
 //            }
 //            System.out.println("/////////////");
         }
         return uniquePositions;
+    }
+
+    public static boolean removeCarat(ArrayList<ArrayList<String>> f){
+        for (int i = 0; i < f.size(); i++){
+            for (int j = 0; j < f.getFirst().size(); j++){
+                if (f.get(i).get(j).equals("^")){
+                    f.get(i).set(j, ".");
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static ArrayList<ArrayList<String>> getFileData(String fileName) {
