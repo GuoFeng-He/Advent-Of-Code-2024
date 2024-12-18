@@ -7,12 +7,14 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 // 2207 (too high)
+//1915
 public class Day6 {
     public static void main(String[] args){
         ArrayList<ArrayList<String>> fileData = getFileData("src/Day6Input");
 
 
         System.out.println("Part One: " + partOne(fileData));
+        fileData = getFileData("src/Day6Input");
         System.out.println("Part Two: " + partTwo(fileData));
     }
 
@@ -27,12 +29,20 @@ public class Day6 {
         int count = 0;
 
         for (String pos: uniquePositions){
-            ArrayList<ArrayList<String>> b = getFileData("src/Day6Input");
+            ArrayList<ArrayList<String>> b = new ArrayList<>();
+            b.addAll(f);
+
+            for (int i = 0; i < b.size(); i++){
+                for (int j = )
+            }
+
+
             removeCarat(b);
             String[] posSplit = pos.split(","); // columns [0], rows[1]
             int x = Integer.parseInt(posSplit[0]);
             int y = Integer.parseInt(posSplit[1]);
             String symbol = pos.substring(pos.length() - 1);
+//            System.out.println(symbol);
             b.get(y).set(x, symbol);
 
 
@@ -48,7 +58,7 @@ public class Day6 {
 
             if (getAllPositions(b).isEmpty()){
                 count++;
-                System.out.println(count);
+//                System.out.println(count);
             }
         }
         return count;
@@ -98,13 +108,17 @@ public class Day6 {
                 }
             }
 
-            String save = pos[0] + "," + pos[1] + "," + s;
-            if (!sequence.contains(save)) {
-                sequence.add(save);
-            } else {
+            String position = pos[0] + "," + pos[1];
+            String save = position + "," + s;
+//            System.out.println(position);
+//            System.out.println(save);
+//            System.out.println(sequence);
+            if (sequence.contains(save)) {
                 return new HashSet<>();
+            } else {
+                sequence.add(save);
             }
-            uniquePositions.add(save);
+            uniquePositions.add(position);
             pos = getPosition(f);
 
 
